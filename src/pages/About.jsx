@@ -1,12 +1,24 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import homebanner from '../assets/homebanner.jpg';
 import chefsbg from '../assets/chefsbg.jpg';
 import chef1 from '../assets/chef1.jpg';
 import chef2 from '../assets/chef2.jpg';
 import chef3 from '../assets/chef3.jpg';
+import { motion, useInView, useAnimation } from 'framer-motion';
+
 
 const About = () => {
+
+  const ref = useRef(null);
+  const isInView = useInView(ref, {once:true });
+  const mainControls = useAnimation();
+
+  useEffect(() => {
+    if (isInView) {
+      mainControls.start("visible");
+    }
+  }, [isInView]);
 
   const chefsHeader = {
     backgroundImage: `url(${chefsbg})`,
@@ -18,7 +30,12 @@ const About = () => {
   return (
     <>
       <Navbar bg="#282828" hasShadow={true}/>
-      <div className='w-full bg-gray-50 py-24 px-4 mt-20'>
+      <motion.div className='w-full bg-gray-50 py-24 px-4 mt-20' 
+        initial={{ x: 100, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        exit={{ x: -100, opacity: 0 }}
+        transition={{ duration: 1.2 }}
+        >
         <div className='max-w-[1240px] mx-auto grid md:grid-cols-2'>
           <img className='w-[500px] mx-auto my-4 shadow-lg shadow-gray-500 border-solid border-[1px] rounded-md border-black' src={homebanner} alt='/' />
           <div className='flex flex-col justify-center'>
@@ -41,7 +58,7 @@ const About = () => {
             </p>
           </div>
         </div>
-      </div>
+      </motion.div>
       {/*Chefs Header Section*/}
       <div className='py-20 shadow-lg shadow-gray-500' style={chefsHeader}>
         <div className='max-w-[1240px] mx-auto text-center'>
@@ -51,7 +68,15 @@ const About = () => {
         </div>
       </div>
       {/*Chefs Cards*/}
-      <div className='w-full bg-gray-50 py-[7rem] mt-5 px-4'>
+      <motion.div ref={ref} className='w-full bg-gray-50 py-[7rem] mt-5 px-4'
+        variants={{
+          hidden: { opacity: 0, y: 75 },
+          visible: { opacity: 1, y: 0 },
+        }}
+        initial="hidden"
+        animate={mainControls}
+        transition={{ duration: 1, delay: 0.5 }}
+      >
         <div className='max-w-[1240px] mx-auto grid md:grid-cols-3 gap-16'>
           <div className='w-full shadow-xl flex flex-col p-4 my-4 rounded-lg hover:scale-105 duration-300'>
             <img className='mx-auto mt-[-3rem] bg-gray-50' src={chef1} alt='/' />
@@ -69,7 +94,7 @@ const About = () => {
             <p className='text-center text-base'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam.</p>
           </div>
         </div>
-      </div>
+      </motion.div>
     </>
   );
 };
