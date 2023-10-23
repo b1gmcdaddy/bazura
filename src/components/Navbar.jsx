@@ -9,7 +9,6 @@ const Navbar = ({ bg, hasShadow }) => {
     { name: 'About', path: '/about' },
     { name: 'Menu', path: '/menu' },
     { name: 'Gallery', path: '/gallery' },
-    { name: 'Chefs', path: '/chefs' },
     { name: 'Contact', path: '/contact' },
   ];
 

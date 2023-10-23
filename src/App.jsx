@@ -4,7 +4,6 @@ import Home from './pages/Home'
 import About from './pages/About'
 import Menu from './pages/Menu'
 import Gallery from './pages/Gallery'
-import Chefs from './pages/Chefs'
 import Contact from './pages/Contact'
 
 const App = () => {
@@ -15,7 +14,6 @@ const App = () => {
         <Route path='/about' element={<About />} />
         <Route path='/menu' element={<Menu />} />
         <Route path='/gallery' element={<Gallery />} />
-        <Route path='/chefs' element={<Chefs />} />
         <Route path='/contact' element={<Contact />} />
       </Routes>
     </main>
