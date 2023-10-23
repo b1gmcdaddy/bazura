@@ -1,7 +1,7 @@
 import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 const Navbar = ({ bg, hasShadow }) => {
 
@@ -34,9 +34,9 @@ const Navbar = ({ bg, hasShadow }) => {
 
           {Navlinks.map((link, index) => (
             <li key={index} className='md:ml-8 uppercase xs:my-2 md:my-0 my-7'>
-              <Link to={link.path} className="text-white md:text-lg font-medium hover:text-xl hover:transition-all duration-500 ease-in">
+              <NavLink to={link.path} className="text-white md:text-lg font-medium hover:text-xl hover:transition-all duration-500 ease-in">
                 {link.name}
-              </Link>
+              </NavLink>
             </li>
           ))}
         </ul>

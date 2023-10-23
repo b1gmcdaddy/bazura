@@ -7,4 +7,8 @@
     font-family: 'customFont'; 
     src: url('/BlendaScript.otf') format('opentype');
   }
+
+nav a.active{
+  border-bottom: 2.5px solid rgb(22 163 74);
+}
   

@@ -1,8 +1,11 @@
 import React from 'react'
+import Navbar from '../components/Navbar'
 
 const Gallery = () => {
   return (
-    <div>Gallery</div>
+    <>
+    <Navbar bg="#282828" hasShadow={true}/>
+    </>
   )
 }
 
