@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import homebanner from '../assets/homebanner.jpg';
+import Footer from '../components/Footer';
 import chefsbg from '../assets/chefsbg.jpg';
 import chef1 from '../assets/chef1.jpg';
 import chef2 from '../assets/chef2.jpg';
@@ -95,6 +96,7 @@ const About = () => {
           </div>
         </div>
       </motion.div>
+      <Footer />
     </>
   );
 };

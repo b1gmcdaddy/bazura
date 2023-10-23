@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Navbar from '../components/Navbar'
 import menubg from '../assets/menubanner.jpg';
 import { motion } from 'framer-motion';
+import Footer from '../components/Footer';
 
 const Menu = () => {
 
@@ -199,6 +200,7 @@ const Menu = () => {
           </div>
         </div>
       </motion.div>
+      <Footer />
     </>
   )
 }
