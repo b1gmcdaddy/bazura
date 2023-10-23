@@ -33,8 +33,8 @@ const Navbar = () => {
         left-0 top-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in ${openMenu ? 'top-20':'top-[-490px]'}`}>
 
           {Navlinks.map((link, index) => (
-            <li key={index} className='md:ml-8 text-base uppercase md:my-0 my-7'>
-              <Link to={link.path} className="text-white hover:text-xl hover:transition-all duratiotion-500 ease-in">
+            <li key={index} className='md:ml-8 uppercase xs:my-2 md:my-0 my-7'>
+              <Link to={link.path} className="text-white md:text-lg font-medium hover:text-xl hover:transition-all duratiotion-500 ease-in">
                 {link.name}
               </Link>
             </li>
