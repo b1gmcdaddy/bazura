@@ -31,7 +31,7 @@ const About = () => {
               sit exercitationem sequi est quas 
               sunt pariatur vel, molestiae sapiente.
             </p>
-            <h3 className='md:text-2xl sm:text-xl text-lg font-medium py-3'>OUR RESTAURANT</h3>
+            <h3 className='md:text-2xl sm:text-xl text-lg font-medium py-3'>Awards and Chefs</h3>
             <p className='text-justify font-[Georgia]'>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
               Corrupti recusandae excepturi ullam natus

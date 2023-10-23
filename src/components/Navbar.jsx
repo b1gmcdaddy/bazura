@@ -35,7 +35,7 @@ const Navbar = ({ bg, hasShadow }) => {
 
           {Navlinks.map((link, index) => (
             <li key={index} className='md:ml-8 uppercase xs:my-2 md:my-0 my-7'>
-              <Link to={link.path} className="text-white md:text-lg font-medium hover:text-xl hover:transition-all duratiotion-500 ease-in">
+              <Link to={link.path} className="text-white md:text-lg font-medium hover:text-xl hover:transition-all duration-500 ease-in">
                 {link.name}
               </Link>
             </li>
