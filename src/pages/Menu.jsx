@@ -3,6 +3,7 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Navbar from '../components/Navbar'
 import menubg from '../assets/menubanner.jpg';
+import { motion } from 'framer-motion';
 
 const Menu = () => {
 
@@ -125,7 +126,12 @@ const Menu = () => {
         </div>
       </div>
 
-    <div className='w-full bg-gray-100 xs:py-[5rem] px-4 mx-auto z-0'>
+    <motion.div className='w-full bg-gray-100 xs:py-[5rem] px-4 mx-auto z-0'
+      initial={{ y: 100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      exit={{ y: -100, opacity: 0 }}
+      transition={{ duration: 1.5, delay: 0.2 }}
+    >
         <div className='max-w-[1240px] mx-auto grid md:grid-cols-2 gap-16 z-10'>
           {/*SNACKS SECTION*/}
           <div className='w-[-90%] shadow-xl flex flex-col p-4 my-4 rounded-lg bg-gray-50'>
@@ -192,7 +198,7 @@ const Menu = () => {
           ))}
           </div>
         </div>
-      </div>
+      </motion.div>
     </>
   )
 }
