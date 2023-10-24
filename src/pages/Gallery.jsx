@@ -25,19 +25,21 @@ const Gallery = () => {
     backgroundImage: `url(${galleryBg})`,
     backgroundSize: 'cover',  
     backgroundPosition: 'center',
-    height: '40vh',
+    height: '30vh',
+    marginTop: '5rem',
   };
   
   return (
     <>
       <Navbar bg="#282828" hasShadow={true}/>
 
-      <div className='py-20 shadow-lg shadow-gray-500 mb-4' style={galleryHeader}>
-        <div className='max-w-[1240px] mx-auto text-center md:my-[5rem] xs:my-[2rem]'>
-          <h1 className='text-white md:text-4xl sm:text-2xl tracking-wide text-xl font-bold'>GALLERY</h1>
-          <div className='md:w-[100px] xs:w-[60px] h-[4px] mx-auto bg-green-600 rounded-md mt-3'></div>
-          <p className='text-white xs:mt-0 md:mt-2 pt-5 md:text-xl xs:text-base font-sans'>Lorem ipsum dolor sit amet, consectetur 
-          adipiscing elit duis sed dapibus leonec.</p>
+      <div className='relative flex items-center justify-center xs:h-[20vh]
+                      shadow-lg shadow-gray-500 mb-4' style={galleryHeader}>
+        <div className='max-w-[1240px] mx-auto absolute xs:px-10 text-center'>
+        <h1 className='text-white md:text-4xl sm:text-2xl tracking-wide text-xl font-bold'>GALLERY</h1>
+          <div className='w-[100px] h-[4px] mx-auto bg-green-600 rounded-md mt-4 mb-3'></div>
+          <p className='text-white md:mt-5 md:pt-5 md:text-xl xs:text-base font-sans'>Lorem ipsum dolor sit amet, consectetur adipiscing 
+          elit duis sed dapibus leonec.</p>
         </div>
       </div>
 

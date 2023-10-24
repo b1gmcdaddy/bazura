@@ -61,13 +61,16 @@ const About = () => {
         </div>
       </motion.div>
       {/*Chefs Header Section*/}
-      <div className='py-20 shadow-lg shadow-gray-500' style={chefsHeader}>
-        <div className='max-w-[1240px] mx-auto text-center'>
-          <h1 className='text-white md:text-4xl sm:text-2xl tracking-wide text-xl font-bold'>MEET OUR CHEFS</h1>
+      <div className='relative flex items-center justify-center xs:h-[20vh]
+                      shadow-lg shadow-gray-500 mb-4' style={chefsHeader}>
+        <div className='max-w-[1240px] mx-auto absolute xs:px-10 text-center'>
+        <h1 className='text-white md:text-4xl sm:text-2xl tracking-wide text-xl font-bold'>MEET OUR CHEFS</h1>
           <div className='w-[100px] h-[4px] mx-auto bg-green-600 rounded-md mt-4 mb-3'></div>
-          <p className='text-white md:mt-5 md:pt-5 md:text-xl xs:text-base font-sans'>Lorem ipsum dolor sit amet, consectetur adipiscing elit duis sed dapibus leonec.</p>
+          <p className='text-white md:mt-5 md:pt-5 md:text-xl xs:text-base font-sans'>Lorem ipsum dolor sit amet, consectetur adipiscing 
+          elit duis sed dapibus leonec.</p>
         </div>
       </div>
+
       {/*Chefs Cards*/}
       <motion.div ref={ref} className='w-full bg-gray-50 py-[7rem] mt-5 px-4'
         variants={{
