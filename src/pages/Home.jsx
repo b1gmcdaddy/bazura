@@ -21,7 +21,7 @@ const Home = () => {
     <>
       <Navbar />
       <div style={containerStyle}>
-        <motion.div className='absolute md:top-1/2 xs:top-2/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 align-middle'
+        <motion.div className='absolute md:top-1/2 xs:top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 align-middle'
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 2.5 }}
