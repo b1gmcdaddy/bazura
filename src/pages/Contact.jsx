@@ -26,15 +26,19 @@ const Contact = () => {
         </div>
       </div>
 
-      <div className='w-full bg-gray-50'>
-        <div className='mx-auto max-w-[900px]'>
-        <h2 className='text-2xl font-semibold mb-4'>Contact Us</h2>
+      <div className='w-full bg-gray-50 md:py-[3rem] min-h-[70vh]'>
+        <div className='mx-auto max-w-[900px] text-center'>
+        <h2 className='text-2xl mb-4 tracking-wide md:text-4xl'>CONTACT US</h2>
+        <div className='w-[100px] h-[2.5px] mx-auto bg-green-600 rounded-md mt-4 mb-[2rem]'></div>
+        <p className='md:mt-3 md:pt-3 md:text-lg xs:text-base'>Lorem ipsum dolor sit amet, consectetur adipiscing 
+          elit duis sed dapibus leonec.</p>
         <form>
-          <div className='mb-4 grid grid-cols-2 gap-8'>
+          <div className='mb-4 mt-[3.5rem] grid grid-cols-2 gap-8'>
             <input
               type='text'
               id='name'
               name='name'
+              placeholder='Name'
               className='w-full px-3 py-2 border rounded-md'
               required
             />
@@ -42,29 +46,27 @@ const Contact = () => {
               type='email'
               id='email'
               name='email'
-              
+              placeholder='Email'
               className='w-full px-3 py-2 border rounded-md'
               required
             />
           </div>
           <div className='mb-4'>
-            <label htmlFor='message' className='block text-sm font-medium'>
-              Message
-            </label>
             <textarea
               id='message'
+              placeholder='Message'
               name='message'
            
               className='w-full px-3 py-2 border rounded-md'
               required
             />
           </div>
-          <div className='flex justify-center'>
+          <div className='flex justify-center mt-[2rem]'>
           <button
             type='submit'
-            className='bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600'
+            className='bg-green-700 text-white py-2 px-4 hover:bg-green-600'
           >
-            Submit
+            SEND MESSAGE
           </button>
           </div>
         </form>
