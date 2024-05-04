@@ -10,6 +10,7 @@ const Navbar = ({ bg, hasShadow }) => {
     { name: 'Menu', path: '/menu' },
     { name: 'Gallery', path: '/gallery' },
     { name: 'Contact', path: '/contact' },
+    { name: 'Login', path: '' },
   ];
 
   const [openMenu, setOpenMenu] = useState(false);
@@ -30,11 +31,11 @@ const Navbar = ({ bg, hasShadow }) => {
         </div>
 
         <ul className={`md:flex md:items-center md:pb-0 pb-12 absolute md:static md:z-auto z-[-1] 
-        left-0 top-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in ${openMenu ? 'top-20':'top-[-490px]'}`}>
+        left-0 top-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in ${openMenu ? 'top-20 bg-white':'top-[-490px]'}`}>
 
           {Navlinks.map((link, index) => (
             <li key={index} className='md:ml-8 uppercase xs:my-2 md:my-0 my-7'>
-              <NavLink to={link.path} className="text-white md:text-lg font-medium hover:text-xl hover:transition-all duration-500 ease-in">
+              <NavLink to={link.path} className={`md:text-lg font-medium hover:text-xl hover:transition-all duration-500 ease-in ${openMenu ? 'text-black':'text-white'}`}>
                 {link.name}
               </NavLink>
             </li>
