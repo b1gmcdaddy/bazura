@@ -10,7 +10,7 @@ const Navbar = ({ bg, hasShadow }) => {
     { name: 'Menu', path: '/menu' },
     { name: 'Gallery', path: '/gallery' },
     { name: 'Contact', path: '/contact' },
-    { name: 'Login', path: '' },
+    { name: 'Login', path: '/login' },
   ];
 
   const [openMenu, setOpenMenu] = useState(false);
