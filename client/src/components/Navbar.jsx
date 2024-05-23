@@ -1,17 +1,26 @@
 import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { AuthContext } from './AuthContext';
+
 
 const Navbar = ({ bg, hasShadow }) => {
+
+  const { isLoggedIn, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const Navlinks = [
     { name: 'About', path: '/about' },
     { name: 'Menu', path: '/menu' },
     { name: 'Gallery', path: '/gallery' },
     { name: 'Contact', path: '/contact' },
-    { name: 'Login', path: '/login' },
   ];
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
 
   const [openMenu, setOpenMenu] = useState(false);
 
@@ -40,6 +49,17 @@ const Navbar = ({ bg, hasShadow }) => {
               </NavLink>
             </li>
           ))}
+           <li className='md:ml-8 uppercase xs:my-2 md:my-0 my-7'>
+            {isLoggedIn ? (
+              <button onClick={handleLogout} className={`md:text-lg font-medium hover:text-xl hover:transition-all duration-500 ease-in ${openMenu ? 'text-black':'text-white'}`}>
+                LOGOUT
+              </button>
+            ) : (
+              <NavLink to='/login' className={`md:text-lg font-medium hover:text-xl hover:transition-all duration-500 ease-in ${openMenu ? 'text-black':'text-white'}`}>
+                LOGIN
+              </NavLink>
+            )}
+          </li>
         </ul>
       </div>
     </nav>

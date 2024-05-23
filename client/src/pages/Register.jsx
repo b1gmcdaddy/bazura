@@ -1,10 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import homebanner from '../assets/homebanner.jpg';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import axios from 'axios';
 
 const Register = () => {
+
+  const [values, setValues] = useState({
+    email: '',
+    username: '',
+    password: ''
+  })
 
   const containerStyle = {
     backgroundImage: `url(${homebanner})`,
@@ -12,6 +19,21 @@ const Register = () => {
     backgroundPosition: 'center',  
     height: '100vh',  
   };
+
+  const navigate = useNavigate();
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        axios.post('http://localhost:8081/register', values)
+        .then(res => {
+          if(res.data.Status === "Success") {
+            navigate('/login');
+          } else {
+            alert("Error");
+          }
+        })
+        .then(err => console.log(err));
+    } 
 
   return (
     <>
@@ -23,11 +45,13 @@ const Register = () => {
           transition={{ duration: 1 }}
           >
           <h1 className='text-4xl text-center text-black mb-6'>Create an Account</h1>
-          <form className='text-center'>
+          <form className='text-center' onSubmit={handleSubmit}>
+          <input className='block w-full bg-gray-100 border border-gray-300 rounded-md px-4 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent'
+              type='email' name='email' placeholder='Enter Email' onChange={e => setValues({...values, email: e.target.value})} />
             <input className='block w-full bg-gray-100 border border-gray-300 rounded-md px-4 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent'
-              type='text' placeholder='Username' />
+              type='text' name='username' placeholder='Enter Username' onChange={e => setValues({...values, username: e.target.value})} />
             <input className='block w-full bg-gray-100 border border-gray-300 rounded-md px-4 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent'
-              type='password' placeholder='Password' />
+              type='password' name='password' placeholder='Enter Password' onChange={e => setValues({...values, password: e.target.value})}/>
             <button className='w-full bg-green-800 text-white rounded-md px-4 py-2 font-semibold hover:bg-green-600 focus:outline-none focus:bg-green-600'
               type='submit'>REGISTER</button>
           </form>

@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import homebanner from '../assets/homebanner.jpg';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import axios from 'axios';
 
 const Home = () => {
+
+  axios.defaults.withCredentials = true;
 
   const containerStyle = {
     backgroundImage: `url(${homebanner})`,
