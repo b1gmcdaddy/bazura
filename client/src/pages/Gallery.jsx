@@ -11,15 +11,16 @@ const Gallery = () => {
 
   useEffect(() => {
     const fetchMealData = async () => {
-      try {
-        const response = await axios.get('https://www.themealdb.com/api/json/v1/1/search.php?s=',);
-        setMealData(response.data.meals);
-      } catch (error) {
-        console.error('Error fetching data mein:', error);
-      }
+        try {
+            const response = await axios.get('http://localhost:8081/meals');
+            setMealData(response.data.meals);
+        } catch (error) {
+            console.error('Error fetching data from server:', error);
+        }
     };
     fetchMealData();
-  }, []);
+}, []);
+
 
   const galleryHeader = {
     backgroundImage: `url(${galleryBg})`,
@@ -49,7 +50,7 @@ const Gallery = () => {
           initial={{ x: 100, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: -100, opacity: 0 }}
-          transition={{ duration: 2 }}
+          transition={{ duration: 1.2 }}
           >
           <img src={meal.strMealThumb} alt={meal.strMeal} className='outline outline-white 
           outline-1 outline-offset-[-10px] hover:scale-105 duration-300' />

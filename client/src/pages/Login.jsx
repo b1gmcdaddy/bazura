@@ -1,10 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import homebanner from '../assets/homebanner.jpg';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import axios from 'axios';
-import { AuthContext } from '../components/AuthContext';
+
 
 
 const Login = () => {
@@ -14,16 +14,14 @@ const Login = () => {
     password: ''
 })
 
-  const { login } = useContext(AuthContext);
   axios.defaults.withCredentials = true;
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (event) => {
+    event.preventDefault();
     axios.post('http://localhost:8081/login', values)
     .then(res => {
       if(res.data.Status === "Success") {
-        login();
         navigate('/');
       } else {
         alert(res.data.Error);

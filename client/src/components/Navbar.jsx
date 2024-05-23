@@ -1,13 +1,10 @@
 import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { AuthContext } from './AuthContext';
 
+const Navbar = ({ bg, hasShadow, auth, handleLogout }) => {
 
-const Navbar = ({ bg, hasShadow }) => {
-
-  const { isLoggedIn, logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const Navlinks = [
@@ -16,12 +13,6 @@ const Navbar = ({ bg, hasShadow }) => {
     { name: 'Gallery', path: '/gallery' },
     { name: 'Contact', path: '/contact' },
   ];
-
-  const handleLogout = () => {
-    logout();
-    navigate('/');
-  };
-
   const [openMenu, setOpenMenu] = useState(false);
 
   const style = {
@@ -39,8 +30,8 @@ const Navbar = ({ bg, hasShadow }) => {
         <FontAwesomeIcon icon={openMenu ? faXmark : faBars } />
         </div>
 
-        <ul className={`md:flex md:items-center md:pb-0 pb-12 absolute md:static md:z-auto z-[-1] 
-        left-0 top-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in ${openMenu ? 'top-20 bg-white':'top-[-490px]'}`}>
+        <ul className={`md:flex md:items-center md:pb-0 pb-15 text-center absolute md:static md:z-auto z-[-1] 
+        left-0 top-0 w-full md:w-auto md:pl-0 transition-all duration-500 ease-in ${openMenu ? 'top-20 bg-white':'top-[-490px]'}`}>
 
           {Navlinks.map((link, index) => (
             <li key={index} className='md:ml-8 uppercase xs:my-2 md:my-0 my-7'>
@@ -49,17 +40,13 @@ const Navbar = ({ bg, hasShadow }) => {
               </NavLink>
             </li>
           ))}
-           <li className='md:ml-8 uppercase xs:my-2 md:my-0 my-7'>
-            {isLoggedIn ? (
-              <button onClick={handleLogout} className={`md:text-lg font-medium hover:text-xl hover:transition-all duration-500 ease-in ${openMenu ? 'text-black':'text-white'}`}>
-                LOGOUT
+            {auth ? (
+            <li className='md:ml-8 uppercase xs:my-2 md:my-0 my-7'>
+              <button onClick={handleLogout} className='md:text-lg font-medium hover:text-xl hover:transition-all duration-500 ease-in md:text-white'>
+                LOG OUT
               </button>
-            ) : (
-              <NavLink to='/login' className={`md:text-lg font-medium hover:text-xl hover:transition-all duration-500 ease-in ${openMenu ? 'text-black':'text-white'}`}>
-                LOGIN
-              </NavLink>
-            )}
-          </li>
+            </li>
+          ) : null}
         </ul>
       </div>
     </nav>

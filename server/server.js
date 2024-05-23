@@ -4,6 +4,7 @@ import cors from 'cors';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import cookieParser from 'cookie-parser';
+import axios from 'axios';
 
 const app = express();
 app.use(express.json());
@@ -19,6 +20,17 @@ const db = mysql.createConnection({
     user: "root",
     password: "",
     database: "bazura"
+});
+
+//for theMealDB api
+app.get('/meals', async (req, res) => {
+    try {
+        const response = await axios.get('https://www.themealdb.com/api/json/v1/1/search.php?s=', { withCredentials: true });
+        res.json(response.data);
+    } catch (error) {
+        console.error('Error fetching data from MealDB:', error);
+        res.status(500).json({ error: 'Failed to fetch data from MealDB' });
+    }
 });
 
 const verifyUser = (req, res, next) => {
@@ -38,7 +50,7 @@ const verifyUser = (req, res, next) => {
 }
 
 app.get('/', verifyUser, (req, res) => {
-    return res.json({Status: "Success", username: req.username});
+    return res.json({Status: "Success", username: req.name});
 })
 
 
@@ -67,8 +79,8 @@ app.post('/login', (req, res) => {
             bcrypt.compare(req.body.password.toString(), data[0].password, (err, response) => {
                 if(err) return res.json({Error: "Password compare error"});
                 if(response) {
-                    const name = data[0].name;
-                    const token = jwt.sign({name}, "jwtKey", {expiresIn: '1d'});
+                    const username = data[0].username;
+                    const token = jwt.sign({username}, "jwtKey", {expiresIn: '1d'});
                     res.cookie('token', token);
                     return res.json({Status: "Success"});
                 } else {

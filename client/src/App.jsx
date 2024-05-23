@@ -7,13 +7,11 @@ import Gallery from './pages/Gallery'
 import Contact from './pages/Contact'
 import Login from './pages/Login'
 import Register from './pages/Register'
-import { AuthProvider } from './components/AuthContext';
 
 
 const App = () => {
   return (
     <main>
-      <AuthProvider>
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/about' element={<About />} />
@@ -23,7 +21,6 @@ const App = () => {
         <Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login />} />
       </Routes>
-      </AuthProvider>
     </main>
   )
 }
