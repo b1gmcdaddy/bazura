@@ -20,7 +20,7 @@ const Login = () => {
         <motion.div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 align-middle bg-gray-50 px-8 py-10 rounded-lg shadow-md'
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 2.5 }}
+          transition={{ duration: 1.0 }}
           >
           <h1 className='text-4xl text-center text-black mb-6'>Log In</h1>
           <form className='text-center'>

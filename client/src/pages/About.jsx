@@ -84,17 +84,17 @@ const About = () => {
         <div className='max-w-[1240px] mx-auto grid md:grid-cols-3 gap-16'>
           <div className='w-full shadow-xl flex flex-col p-4 my-4 rounded-lg hover:scale-105 duration-300'>
             <img className='mx-auto mt-[-3rem] bg-gray-50' src={chef1} alt='/' />
-            <h2 className='text-2xl font-bold text-center py-8'>Sarel Pebeda</h2>
+            <h2 className='text-2xl font-bold text-center py-8'>Sarel Pebida</h2>
             <p className='text-center text-base'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam.</p>
           </div>
           <div className='w-full shadow-xl flex flex-col p-4 my-4 rounded-lg hover:scale-105 duration-300'>
             <img className='mx-auto mt-[-3rem] bg-gray-50' src={chef2} alt='/' />
-            <h2 className='text-2xl font-bold text-center py-8'>Vince Doe</h2>
+            <h2 className='text-2xl font-bold text-center py-8'>Jolony Tangpuz</h2>
             <p className='text-center text-base'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam.</p>
           </div>
           <div className='w-full shadow-xl flex flex-col p-4 my-4 rounded-lg hover:scale-105 duration-300'>
             <img className='mx-auto mt-[-3rem] bg-gray-50' src={chef3} alt='/' />
-            <h2 className='text-2xl font-bold text-center py-8'>Edgar Doe</h2>
+            <h2 className='text-2xl font-bold text-center py-8'>Nikko Ensomo</h2>
             <p className='text-center text-base'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam.</p>
           </div>
         </div>
