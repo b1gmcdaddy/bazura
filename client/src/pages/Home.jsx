@@ -55,6 +55,7 @@ const Home = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
+          
           <h1 className='text-white md:text-7xl xs:text-3xl' style={contentStyle}>Bazura Grill</h1>
           <h2 className='text-white md:text-2xl text-center tracking-wider'>Cafe / Pub / Imnanan</h2>
           {

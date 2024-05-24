@@ -22,7 +22,7 @@ const db = mysql.createConnection({
     database: "bazura"
 });
 
-//for theMealDB api
+////////////////for theMealDB proxy srver////////////////////////////////////
 app.get('/meals', async (req, res) => {
     try {
         const response = await axios.get('https://www.themealdb.com/api/json/v1/1/search.php?s=', { withCredentials: true });
@@ -33,6 +33,7 @@ app.get('/meals', async (req, res) => {
     }
 });
 
+/////////////////////////////////auth, registration, lgoin////////////////////////////////////////////
 const verifyUser = (req, res, next) => {
     const token = req.cookies.token;
     if(!token) {
@@ -50,7 +51,7 @@ const verifyUser = (req, res, next) => {
 }
 
 app.get('/', verifyUser, (req, res) => {
-    return res.json({Status: "Success", username: req.name});
+    return res.json({Status: "Success", username: req.username});
 })
 
 
@@ -98,6 +99,31 @@ app.get('/logout', (req, res) => {
     return res.json({Status: "Success"});
 })
 
+
+////////////////////////////ADD FOOD MENU SECTION///////////////////////////////
+app.get('/menu', (req, res) => {
+    const sql = "SELECT * FROM menu";
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ Error: "Failed to fetch menu items" });
+      }
+      return res.json({ Status: "Success", menu: result });
+    });
+  });
+
+app.post('/addFood', (req, res) => {
+    const { foodName, foodDesc, category, price } = req.body;
+    const sql = "INSERT INTO menu (foodName, foodDesc, category, price) VALUES (?, ?, ?, ?)";
+    const values = [foodName, foodDesc, category, price];
+    db.query(sql, values, (err, result) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ Error: "addFood error" });
+      }
+      return res.json({ Status: "Success" });
+    });
+  });
 
 app.listen(8081, () => {
     console.log("test server side..");

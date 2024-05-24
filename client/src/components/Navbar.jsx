@@ -46,7 +46,8 @@ const Navbar = ({ bg, hasShadow, auth, handleLogout }) => {
                 LOG OUT
               </button>
             </li>
-          ) : null}
+          ) : null
+          }
         </ul>
       </div>
     </nav>
