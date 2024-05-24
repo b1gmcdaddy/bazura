@@ -104,27 +104,53 @@ app.get('/logout', (req, res) => {
 app.get('/menu', (req, res) => {
     const sql = "SELECT * FROM menu";
     db.query(sql, (err, result) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).json({ Error: "Failed to fetch menu items" });
+        if(err) {
+            console.log(err);
+            return res.json("Error");
       }
       return res.json({ Status: "Success", menu: result });
     });
   });
 
 app.post('/addFood', (req, res) => {
-    const { foodName, foodDesc, category, price } = req.body;
     const sql = "INSERT INTO menu (foodName, foodDesc, category, price) VALUES (?, ?, ?, ?)";
+    const { foodName, foodDesc, category, price } = req.body;
     const values = [foodName, foodDesc, category, price];
     db.query(sql, values, (err, result) => {
-      if (err) {
+      if(err) {
         console.error(err);
-        return res.status(500).json({ Error: "addFood error" });
+        return res.json("error inserting menu itm");
       }
       return res.json({ Status: "Success" });
     });
   });
+ 
+app.put('/menu/:id', (req, res) => {
+    const { foodName, foodDesc, price } = req.body;
+    const { id } = req.params;
+    const sql = "UPDATE menu SET foodName = ?, foodDesc = ?, price = ? WHERE foodID = ?";
+    const values = [foodName, foodDesc, price, id];
+    db.query(sql, values, (err, result) => {
+        if(err) {
+            console.error(err);
+            return res.json("error updating menu item");
+        }
+        return res.json({ Status: "Success" });
+    });
+});
+
+app.delete('/menu/:id', (req, res) => {
+    const { id } = req.params;
+    const sql = "DELETE FROM menu WHERE foodID = ?";
+    db.query(sql, [id], (err, result) => {
+        if(err) {
+            console.error(err);
+            return res.json("error deleting menu item");
+        }
+        return res.json({ Status: "Success" });
+    });
+});
 
 app.listen(8081, () => {
-    console.log("test server side..");
+    console.log("testing server side..");
 });

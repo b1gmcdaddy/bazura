@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { faStar, faPlusCircle, faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Navbar from '../components/Navbar'
 import menubg from '../assets/menubanner.jpg';
@@ -8,11 +8,15 @@ import Footer from '../components/Footer';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import AddFoodModal from '../components/AddFoodModal';
+import EditFoodModal from '../components/EditFoodModal';
+
 
 const Menu = () => {
   const [auth, setAuth] = useState(false);
   const [username, setUsername] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editItem, setEditItem] = useState(null); 
   const [menuItems, setMenuItems] = useState({
     snack: [],
     maincourse: [],
@@ -71,6 +75,22 @@ const Menu = () => {
       .catch(err => console.log(err));
   };
 
+  const handleEdit = (foodID) => {
+    const selectedItem = Object.values(menuItems).flatMap(items => items).find(item => item.foodID === foodID);
+    setEditItem(selectedItem);
+    setShowEditModal(true); 
+}
+
+
+  const handleDelete = async (foodID) => {
+    try{
+        await axios.delete(`http://localhost:8081/menu/${foodID}`)
+        window.location.reload()
+    }catch(err) {
+        console.log(err);
+    }
+}
+
   const menuHeader = {
     backgroundImage: `url(${menubg})`,
     backgroundSize: 'cover',  
@@ -107,7 +127,11 @@ const Menu = () => {
                   <button
                    onClick={() => setShowModal(true)}
                    className='p-2 border-solid border-2 border-green-900 rounded-lg bg-green-900 text-white
-                   md:text-lg font-semibold hover:bg-green-800'>
+                   md:text-lg font-semibold hover:bg-green-800 shadow-md shadow-gray-500'>
+                    <FontAwesomeIcon 
+                    icon={faPlusCircle}
+                    className="cursor-pointer mr-2 text-xl"
+                     />
                     Add Food
                   </button>
                 </Link>
@@ -121,13 +145,36 @@ const Menu = () => {
               <h2 className='text-2xl text-center py-3'>Snacks</h2>
               <div className='w-[60px] h-[3px] mx-auto bg-green-600 rounded-md mt-1 mb-4'></div>
               {menuItems.snack.map(item => (
-                <div key={item.foodID} className="flex justify-between items-center border-b py-2">
-                  <span>{item.foodName}</span>
-                  <span>{item.foodDesc}</span>
-                  <span>{item.price}</span>
-                </div>
-              ))}
-            </div>
+                 <div key={item.foodID} className='w-[-90%] shadow-xl flex flex-col p-4 my-4 rounded-lg hover:scale-105 duration-300'>
+                 <ul>
+                   <li className='px-3 mb-4'>
+                     <b className='font-[sans-serif]'>{item.foodName}</b>
+                     <span className='float-right mr-3 font-semibold'>PHP {item.price}</span><br />
+                     <i>{item.foodDesc}</i>
+                     {
+                      auth ? (
+                        <>
+                        <FontAwesomeIcon
+                          icon={faTrashAlt}
+                          className="text-red-800 cursor-pointer mr-3 float-right"
+                          onClick={() => handleDelete(item.foodID)}
+                        />
+                      <FontAwesomeIcon
+                          icon={faEdit}
+                          className="mr-3 text-gray-500 cursor-pointer float-right"
+                          onClick={() => handleEdit(item.foodID)}
+                        />
+                     
+                        </>
+                      )
+                        :
+                        null 
+                     }
+                   </li>   
+                 </ul>
+               </div>
+             ))}
+             </div>
           )}
 
           {/*main course*/}
@@ -136,43 +183,120 @@ const Menu = () => {
               <h2 className='text-2xl text-center py-3'>Main Course</h2>
               <div className='w-[60px] h-[3px] mx-auto bg-green-600 rounded-md mt-1 mb-3'></div>
               {menuItems.maincourse.map(item => (
-                <div key={item.foodID} className="flex justify-between items-center border-b py-2">
-                  <span>{item.foodName}</span>
-                  <span>{item.price}</span>
-                </div>
-              ))}
-            </div>
+                 <div key={item.foodID} className='w-[-90%] shadow-xl flex flex-col p-4 my-4 rounded-lg hover:scale-105 duration-300'>
+                 <ul>
+                   <li className='px-3 mb-4'>
+                     <b className='font-[sans-serif]'>{item.foodName}</b>
+                     <span className='float-right mr-3 font-semibold'>PHP {item.price}</span><br />
+                     <i>{item.foodDesc}</i>
+                     {
+                      auth ? (
+                        <>
+                        <FontAwesomeIcon
+                          icon={faTrashAlt}
+                          className="text-red-800 cursor-pointer mr-3 float-right"
+                          onClick={() => handleDelete(item.foodID)}
+                        />
+                      <FontAwesomeIcon
+                          icon={faEdit}
+                          className="mr-3 text-gray-500 cursor-pointer float-right"
+                          onClick={() => handleEdit(item.foodID)}
+                        />
+                     
+                        </>
+                      )
+                        :
+                        null 
+                     }
+                   </li>
+                 </ul>
+               </div>
+             ))}
+             </div>
           )}
 
           {/* kape*/}
           {menuItems.coffee && (
             <div className='w-[-90%] shadow-xl flex flex-col p-4 my-4 rounded-lg bg-gray-50'>
-              <h2 className='text-2xl text-center py-3'>Coffee</h2>
+              <h2 className='text-2xl text-center py-3'>Coffee <FontAwesomeIcon icon={faStar} className='text-yellow-500' /></h2>
               <div className='w-[60px] h-[3px] mx-auto bg-green-600 rounded-md mt-1 mb-3'></div>
               {menuItems.coffee.map(item => (
-                <div key={item.foodID} className="flex justify-between items-center border-b py-2">
-                  <span>{item.foodName}</span>
-                  <span>{item.price}</span>
-                </div>
-              ))}
+                <div key={item.foodID} className='w-[-90%] shadow-xl flex flex-col p-4 my-4 rounded-lg hover:scale-105 duration-300'>
+                <ul>
+                  <li className='px-3 mb-4'>
+                    <b className='font-[sans-serif]'>{item.foodName}</b>
+                    <span className='float-right mr-3 font-semibold'>PHP {item.price}</span><br />
+                    <i>{item.foodDesc}</i>
+                    {
+                      auth ? (
+                        <>
+                        <FontAwesomeIcon
+                          icon={faTrashAlt}
+                          className="text-red-800 cursor-pointer mr-3 float-right"
+                          onClick={() => handleDelete(item.foodID)}
+                        />
+                      <FontAwesomeIcon
+                          icon={faEdit}
+                          className="mr-3 text-gray-500 cursor-pointer float-right"
+                          onClick={() => handleEdit(item.foodID)}
+                        />
+                     
+                        </>
+                      )
+                        :
+                        null 
+                     }
+                  </li>
+                </ul>
+              </div>
+            ))}
             </div>
           )}
 
           {/*tagay*/}
           {menuItems.alcohol && (
             <div className='w-[-90%] shadow-xl flex flex-col p-4 my-4 rounded-lg bg-gray-50'>
-              <h2 className='text-2xl text-center py-3'>Alcohol</h2>
+              <h2 className='text-2xl text-center py-3'>Alcohol <FontAwesomeIcon icon={faStar} className='text-yellow-500' /></h2>
               <div className='w-[60px] h-[3px] mx-auto bg-green-600 rounded-md mt-1 mb-3'></div>
               {menuItems.alcohol.map(item => (
-                <div key={item.foodID} className="flex justify-between items-center border-b py-2">
-                  <span>{item.foodName}</span>
-                  <span>{item.price}</span>
-                </div>
-              ))}
+                <div key={item.foodID} className='w-[-90%] shadow-xl flex flex-col p-4 my-4 rounded-lg hover:scale-105 duration-300'>
+                <ul>
+                  <li className='px-3 mb-4'>
+                    <b className='font-[sans-serif]'>{item.foodName}</b>
+                    <span className='float-right mr-3 font-semibold'>PHP {item.price}</span><br />
+                    <i>{item.foodDesc}</i>
+                    {
+                      auth ? (
+                        <>
+                        <FontAwesomeIcon
+                          icon={faTrashAlt}
+                          className="text-red-800 cursor-pointer mr-3 float-right"
+                          onClick={() => handleDelete(item.foodID)}
+                        />
+                      <FontAwesomeIcon
+                          icon={faEdit}
+                          className="mr-3 text-gray-500 cursor-pointer float-right"
+                          onClick={() => handleEdit(item.foodID)}
+                        />
+                     
+                        </>
+                      )
+                        :
+                        null 
+                     }
+                  </li>
+                </ul>
+              </div>
+            ))}
             </div>
           )}
         </div>
       </motion.div>
+      <EditFoodModal 
+        show={showEditModal} 
+        onClose={() => setShowEditModal(false)} 
+        item={editItem} 
+      />
       <AddFoodModal show={showModal} onClose={() => setShowModal(false)} />
       <Footer />
     </>

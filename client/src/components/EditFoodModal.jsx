@@ -1,36 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const AddFoodModal = ({ show, onClose }) => {
+const EditFoodModal = ({ show, onClose, item }) => {
   const [foodName, setFoodName] = useState('');
   const [foodDesc, setFoodDesc] = useState('');
-  const [category, setCategory] = useState('snack');
   const [price, setPrice] = useState('');
 
+  useEffect(() => {
+    if (item) {
+      setFoodName(item.foodName);
+      setFoodDesc(item.foodDesc);
+      setPrice(item.price);
+    }
+  }, [item]);
+
   const handleSubmit = (e) => {
-    axios.post('http://localhost:8081/addFood', {
+    axios.put(`http://localhost:8081/menu/${item.foodID}`, {
       foodName,
       foodDesc,
-      category,
       price
     })
     .then(res => {
       if(res.data.Status === "Success") {
-        alert("Food item added successfully!");
+        alert("Food item updated successfully!");
         onClose();
       }
     })
     .catch(err => console.log(err));
   }
 
-  if(!show) {
+  if (!show || !item) {
     return null;
   }
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-600 bg-opacity-50 overflow-y-auto">
       <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-        <h2 className="text-xl mb-4">Add Food Item</h2>
+        <h2 className="text-xl mb-4">Edit Food Item</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">Food Name</label>
@@ -53,19 +59,6 @@ const AddFoodModal = ({ show, onClose }) => {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">Category</label>
-            <select 
-              value={category} 
-              onChange={(e) => setCategory(e.target.value)} 
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            >
-              <option value="snack">Snack</option>
-              <option value="maincourse">Main Course</option>
-              <option value="coffee">Coffee</option>
-              <option value="alcohol">Alcohol</option>
-            </select>
-          </div>
-          <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">Price</label>
             <input 
               type="text" 
@@ -80,7 +73,7 @@ const AddFoodModal = ({ show, onClose }) => {
               type="submit" 
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             >
-              Add Food
+              Update Food
             </button>
             <button 
               type="button" 
@@ -96,4 +89,4 @@ const AddFoodModal = ({ show, onClose }) => {
   );
 }
 
-export default AddFoodModal;
+export default EditFoodModal;
