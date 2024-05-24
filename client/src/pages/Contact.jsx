@@ -62,7 +62,7 @@ const Contact = () => {
                 name="name"
                 value={name}
                 placeholder="Name"
-                className="w-full px-3 py-2 border rounded-md"
+                className="w-full px-3 py-2 border rounded-md focus:outline-none"
                 onChange={(e) => setName(e.target.value)}
                 required
               />
@@ -72,7 +72,7 @@ const Contact = () => {
                 value={email}
                 name="email"
                 placeholder="Email"
-                className="w-full px-3 py-2 border rounded-md"
+                className="w-full px-3 py-2 border rounded-md focus:outline-none"
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
@@ -83,7 +83,7 @@ const Contact = () => {
                 placeholder="Message"
                 value={msg}
                 name="message"
-                className="w-full px-3 py-2 border rounded-md"
+                className="w-full px-3 py-2 border rounded-md focus:outline-none"
                 onChange={(e) => setMsg(e.target.value)}
                 required
               />
@@ -91,7 +91,7 @@ const Contact = () => {
             <div className="flex justify-center mt-[2rem]">
               <button
                 type="submit"
-                className="bg-green-700 text-white py-2 px-4 hover:bg-green-600"
+                className="bg-green-800 text-white py-2 px-4 hover:bg-green-700"
               >
                 SEND MESSAGE
               </button>
