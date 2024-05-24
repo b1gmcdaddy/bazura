@@ -3,6 +3,8 @@ import Navbar from '../components/Navbar';
 import homebanner from '../assets/homebanner.jpg';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { faUserAlt, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 
 const Home = () => {
@@ -62,12 +64,22 @@ const Home = () => {
             auth ?
               <div className='text-center md:mt-5'>
                 <button className='md:p-3 xs:p-2 xs:mt-1 md:border-solid md:border-2 border-green-900
-            rounded-lg bg-green-900 text-white md:mt-5 hover:bg-green-800 xs:text-sm' onClick={handleLogout}>LOG OUT OF ACCOUNT</button>
+            rounded-lg bg-green-900 text-white md:mt-5 md:text-lg hover:bg-green-800 xs:text-sm' onClick={handleLogout}>
+              <FontAwesomeIcon 
+                    icon={faRightFromBracket}
+                    className="cursor-pointer mr-2 md:text-xl"
+                     />
+              Log Out</button>
               </div>
               :
               <div className='text-center md:mt-5'>
                 <Link to="/login"><button className='md:p-3 xs:p-2 xs:mt-1 md:border-solid md:border-2 border-green-900
-            rounded-lg bg-green-900 text-white md:mt-5 hover:bg-green-800 xs:text-sm'>Log In</button></Link>
+            rounded-lg bg-green-900 text-white md:mt-5 md:text-lg hover:bg-green-800 xs:text-sm'>
+              <FontAwesomeIcon 
+                    icon={faUserAlt}
+                    className="cursor-pointer mr-2 md:text-xl"
+                     />
+              Log In</button></Link>
               </div>
           }
         </motion.div>
