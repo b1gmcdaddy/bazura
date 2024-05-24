@@ -29,14 +29,14 @@ const EditFoodModal = ({ show, onClose, item }) => {
     .catch(err => console.log(err));
   }
 
-  if (!show || !item) {
+  if(!show || !item){
     return null;
   }
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-600 bg-opacity-50 overflow-y-auto">
       <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-        <h2 className="text-xl mb-4">Edit Food Item</h2>
+        <h2 className="text-xl text-center mb-4">EDIT MENU ITEM</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">Food Name</label>
@@ -58,7 +58,7 @@ const EditFoodModal = ({ show, onClose, item }) => {
               required
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-8">
             <label className="block text-gray-700 text-sm font-bold mb-2">Price</label>
             <input 
               type="text" 
@@ -68,19 +68,19 @@ const EditFoodModal = ({ show, onClose, item }) => {
               required
             />
           </div>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-center">
             <button 
               type="submit" 
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 mr-3 px-4 rounded focus:outline-none focus:shadow-outline"
             >
-              Update Food
+              SAVE
             </button>
             <button 
               type="button" 
               onClick={onClose} 
-              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             >
-              Cancel
+              CLOSE
             </button>
           </div>
         </form>

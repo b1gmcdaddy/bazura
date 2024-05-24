@@ -130,7 +130,7 @@ const Menu = () => {
                    md:text-lg font-semibold hover:bg-green-800 shadow-md shadow-gray-500'>
                     <FontAwesomeIcon 
                     icon={faPlusCircle}
-                    className="cursor-pointer mr-2 text-xl"
+                    className="cursor-pointer mr-2 md:text-xl"
                      />
                     Add Food
                   </button>
