@@ -5,9 +5,11 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import cookieParser from 'cookie-parser';
 import axios from 'axios';
+import dotenv from 'dotenv';
 
 const app = express();
 app.use(express.json());
+dotenv.config();
 app.use(cors({
     origin: ["http://localhost:5173"],
     methods: ["POST", "GET", "PUT", "DELETE"],
@@ -16,10 +18,10 @@ app.use(cors({
 app.use(cookieParser());
 
 const db = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "bazura"
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE
 });
 
 ////////////////for theMealDB proxy srver////////////////////////////////////
