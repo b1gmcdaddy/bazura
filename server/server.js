@@ -65,7 +65,7 @@ app.post('/register', (req, res) => {
   bcrypt.hash(req.body.password.toString(), hashNum, (err, hash) => {
     if (err) {
       console.error(err);
-      return res.json({ Error: "Error hashing" });
+      return res.status(500).json({ Error: "Error hashing" });
     }
 
     const sql = "INSERT INTO users (`username`, `email`, `password`) VALUES (?)";

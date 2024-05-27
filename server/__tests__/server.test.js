@@ -80,3 +80,44 @@ describe('verifyUser middleware', () => {
 
 
 
+
+////////////////REGISTER//////////////////////////////////
+
+describe('POST /register', () => {
+  
+  test('handles hashing error', async () => {
+    bcrypt.hash.mockImplementationOnce((data, salt, callback) => {
+      callback(new Error('Hashing error')); 
+    });
+    const userData = { username: 'testuser', email: 'test@example.com', password: 'testpassword' };
+    const response = await request(app)
+      .post('/register')
+      .send(userData);
+    expect(response.statusCode).toBe(500); 
+    expect(response.body.Error).toBe('Error hashing');
+  });
+});
+
+///////////////////////////////////LOGIN/////////////////////////////////////
+
+
+describe('POST /login', () => {
+
+  test('returns an error with missing email', async () => {
+    const userData = { password: 'testpassword' };
+    const response = await request(app)
+      .post('/login')
+      .send(userData);
+    expect(response.statusCode).toBe(400);
+    expect(response.body.Error).toBe('Email and password are required');
+  });
+
+  test('returns an error with missing password', async () => {
+    const userData = { email: 'test@example.com' };
+    const response = await request(app)
+      .post('/login')
+      .send(userData);
+    expect(response.statusCode).toBe(400);
+    expect(response.body.Error).toBe('Email and password are required');
+  });
+});
