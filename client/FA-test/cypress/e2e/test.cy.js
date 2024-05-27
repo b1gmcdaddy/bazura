@@ -13,7 +13,7 @@ describe('Web Test', () => {
   })
 
   //Register Account
-  it('Sign Up & Login', () => {
+  it('Sign Up', () => {
     cy.visit('http://localhost:5173/login')
 
     //Clicking the Sign Up link
@@ -42,20 +42,29 @@ describe('Web Test', () => {
   })
 
   //Visits the Abbout Page
-  it('Visits the About Page', () => {
+  it('Visits the About Page and read the contents', () => {
     cy.visit('http://localhost:5173/about')
+
+    cy.scrollTo(100,350).wait(1000)
+    cy.scrollTo(350,600).wait(1000)
+    cy.scrollTo(600,850).wait(1000)
+    cy.scrollTo(850,1100).wait(1000)
   })
 
   //Visits the Menu Page
-  it('Visits the Menu Page', () => {
+  it('Visits the Menu Page and View the menu', () => {
     cy.visit('http://localhost:5173/menu')
+
+    cy.scrollTo(100,500).wait(1000)
   })
 
-  //Visits the Gallery Page
-  it('Visits the Gallery Page', () => {
+  //Visits the Gallery Page 
+  it('Visits the Gallery Page and Scrolls down', () => {
     cy.visit('http://localhost:5173/gallery')
 
-    cy.wait(5000)
+    cy.wait(3000)
+
+    cy.scrollTo(100,1280).wait(1000)
   })
 
   //Visits the Contact Page
@@ -79,6 +88,7 @@ describe('Web Test', () => {
   //Goes back to the main page
   it('Go back to the main page', () => {
     cy.visit('http://localhost:5173/contact')
+    cy.wait(2000)
     cy.get('nav > .items-center > .font-bold > .text-4xl').click()
   })
 })
