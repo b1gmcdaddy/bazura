@@ -55,7 +55,7 @@ describe('Web Test', () => {
   it('Visits the Gallery Page', () => {
     cy.visit('http://localhost:5173/gallery')
 
-    cy.wait(5000)
+    cy.wait(4500)
   })
 
   //Visits the Contact Page
