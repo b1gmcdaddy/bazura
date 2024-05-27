@@ -54,6 +54,8 @@ describe('Web Test', () => {
   //Visits the Gallery Page
   it('Visits the Gallery Page', () => {
     cy.visit('http://localhost:5173/gallery')
+
+    cy.wait(5000)
   })
 
   //Visits the Contact Page
@@ -79,9 +81,4 @@ describe('Web Test', () => {
     cy.visit('http://localhost:5173/contact')
     cy.get('nav > .items-center > .font-bold > .text-4xl').click()
   })
-
-  //Goes back to About page
-  // it('Go back to About page', () => {
-  //   cy.get('nav > .items-center > .text-center > .uppercase').click()
-  // })
 })
