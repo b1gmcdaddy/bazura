@@ -13,7 +13,7 @@ describe('Web Test', () => {
   })
 
   //Register Account
-  it('Sign Up & Login', () => {
+  it('Sign Up', () => {
     cy.visit('http://localhost:5173/login')
 
     //Clicking the Sign Up link
