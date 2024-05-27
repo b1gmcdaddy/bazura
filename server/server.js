@@ -35,66 +35,91 @@ app.get('/meals', async (req, res) => {
     }
 });
 
-/////////////////////////////////auth, registration, lgoin////////////////////////////////////////////
+/////////////////////////////////auth, registration, login////////////////////////////////////////////
 const verifyUser = (req, res, next) => {
     const token = req.cookies.token;
     if(!token) {
-        return res.json({Error: "Auth error"});
+        return res.status(401).json({Error: "Authentication error: Token missing"});
     } else {
         jwt.verify(token, "jwtKey", (err, decoded) => {
             if(err) {
-                return res.json({Error: "token error"})
+                return res.status(401).json({Error: "Authentication error: Invalid token"})
             } else {
                 req.username = decoded.username;
                 next();
             }
         })
     }
-}
+};
 
 app.get('/', verifyUser, (req, res) => {
     return res.json({Status: "Success", username: req.username});
 })
 
-
 const hashNum = 10;
 app.post('/register', (req, res) => {
+  if (!req.body.username || !req.body.email || !req.body.password) {
+    return res.json({ Error: "All fields are required" });
+  }
+
+  bcrypt.hash(req.body.password.toString(), hashNum, (err, hash) => {
+    if (err) {
+      console.error(err);
+      return res.json({ Error: "Error hashing" });
+    }
+
     const sql = "INSERT INTO users (`username`, `email`, `password`) VALUES (?)";
-    bcrypt.hash(req.body.password.toString(), hashNum, (err, hash) => {
-        if(err) return res.json({Error: "Error hashing"});
-        const values = [
-            req.body.username,
-            req.body.email,
-            hash
-        ]
-        db.query(sql, [values], (err, result) => {
-            if(err) return res.json({Error: "data innsertion error in server side"});
-            return res.json({Status: "Success"});
-        }) 
-    })
-})
+    const values = [
+      req.body.username,
+      req.body.email,
+      hash
+    ];
+
+    db.query(sql, [values], (err, result) => {
+      if (err) {
+        console.error(err);
+        return res.json({ Error: "Data insertion error in server side" });
+      }
+
+      return res.json({ Status: "Success" });
+    });
+  });
+});
+
 
 app.post('/login', (req, res) => {
+    const { email, password } = req.body;
+    if (!email || !password) {
+        return res.status(400).json({ Error: "Email and password are required" });
+    }
+
     const sql = "SELECT * FROM users WHERE email = ?";
-    db.query(sql, [req.body.email], (err, data) => {
-        if(err) return res.json({Error: "Server login error"});
-        if(data.length > 0) {
-            bcrypt.compare(req.body.password.toString(), data[0].password, (err, response) => {
-                if(err) return res.json({Error: "Password compare error"});
-                if(response) {
-                    const username = data[0].username;
-                    const token = jwt.sign({username}, "jwtKey", {expiresIn: '1d'});
-                    res.cookie('token', token);
-                    return res.json({Status: "Success"});
-                } else {
-                    return res.json({Error: "Incorrect Password"});
-                }
-            })
-        } else {
-            return res.json({Error: "This email does not exist!"});
+    db.query(sql, [email], (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ Error: "Server error during login" });
         }
-    })
-})
+        if (data.length === 0) {
+            return res.status(404).json({ Error: "Email not found" });
+        }
+
+        const hashedPassword = data[0].password;
+        bcrypt.compare(password, hashedPassword, (err, response) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ Error: "Server error during password comparison" });
+            }
+            if (response) {
+                const username = data[0].username;
+                const token = jwt.sign({ username }, "jwtKey", { expiresIn: '1d' });
+                res.cookie('token', token);
+                return res.status(200).json({ Status: "Success", token });
+            } else {
+                return res.status(401).json({ Error: "Incorrect password" });
+            }
+        });
+    });
+});
 
 app.get('/logout', (req, res) => {
     res.clearCookie('token');
@@ -107,26 +132,28 @@ app.get('/menu', (req, res) => {
     const sql = "SELECT * FROM menu";
     db.query(sql, (err, result) => {
         if(err) {
-            console.log(err);
-            return res.json("Error");
-      }
-      return res.json({ Status: "Success", menu: result });
+            console.error(err);
+            return res.status(500).json({ Error: "Error retrieving menu items" });
+        }
+        return res.json({ Status: "Success", menu: result }); // Ensure response format matches test expectations
     });
-  });
+});
+
 
 app.post('/addFood', (req, res) => {
-    const sql = "INSERT INTO menu (foodName, foodDesc, category, price) VALUES (?, ?, ?, ?)";
-    const { foodName, foodDesc, category, price } = req.body;
-    const values = [foodName, foodDesc, category, price];
-    db.query(sql, values, (err, result) => {
-      if(err) {
-        console.error(err);
-        return res.json("error inserting menu itm");
-      }
-      return res.json({ Status: "Success" });
-    });
+    const newFood = req.body;
+    // Insert the new food item into the database
+    db.query(`INSERT INTO menu (foodName, foodDesc, category, price) VALUES (?, ?, ?, ?)`, 
+      [newFood.foodName, newFood.foodDesc, newFood.category, newFood.price], 
+      (err, results) => {
+        if (err) {
+          res.status(500).send({ Error: 'Failed to add new food item' });
+        } else {
+          res.send({ Status: 'Success', addedFoodId: results.insertId });
+        }
+      });
   });
- 
+
 app.put('/menu/:id', (req, res) => {
     const { foodName, foodDesc, price } = req.body;
     const { id } = req.params;
@@ -135,11 +162,16 @@ app.put('/menu/:id', (req, res) => {
     db.query(sql, values, (err, result) => {
         if(err) {
             console.error(err);
-            return res.json("error updating menu item");
+            return res.status(500).json({ Error: "Error updating menu item" });
+        }
+        if(result.affectedRows === 0) { // Check if any rows were affected by the update
+            return res.status(404).json({ Error: "No matching food item found for update" });
         }
         return res.json({ Status: "Success" });
     });
 });
+
+
 
 app.delete('/menu/:id', (req, res) => {
     const { id } = req.params;
@@ -147,12 +179,18 @@ app.delete('/menu/:id', (req, res) => {
     db.query(sql, [id], (err, result) => {
         if(err) {
             console.error(err);
-            return res.json("error deleting menu item");
+            return res.status(500).json({ Error: "Error deleting menu item" });
+        }
+        if(result.affectedRows === 0) { // Check if any rows were affected by the delete
+            return res.status(404).json({ Error: "No matching food item found for delete" });
         }
         return res.json({ Status: "Success" });
     });
 });
 
+
 app.listen(8081, () => {
-    console.log("testing server side..");
+    console.log(`Server is running on port 8081`);
 });
+
+export default app;
