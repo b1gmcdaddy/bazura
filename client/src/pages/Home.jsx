@@ -14,7 +14,7 @@ const Home = () => {
   axios.defaults.withCredentials = true;
 
   useEffect(() => {
-    axios.get('https://bazura.onrender.com/')
+    axios.get('https://bazura.onrender.com/verify')
       .then(res => {
         if (res.data.Status === "Success") {
           setAuth(true);
