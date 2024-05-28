@@ -45,6 +45,7 @@ const verifyUser = (req, res, next) => {
     } else {
         jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
             if (err) {
+                console.log(err);
                 return res.status(401).json({ Error: "Authentication error: Invalid token" });
             } else {
                 req.username = decoded.username;
