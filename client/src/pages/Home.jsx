@@ -14,7 +14,7 @@ const Home = () => {
   axios.defaults.withCredentials = true;
 
   useEffect(() => {
-    axios.get('http://localhost:8081')
+    axios.get('https://bazura.onrender.com')
       .then(res => {
         if (res.data.Status === "Success") {
           setAuth(true);
@@ -27,7 +27,7 @@ const Home = () => {
   }, []);
 
   const handleLogout = () => {
-    axios.get('http://localhost:8081/logout')
+    axios.get('https://bazura.onrender.com/logout')
       .then(res => {
         if (res.data.Status === "Success") {
           setAuth(false);

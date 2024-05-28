@@ -11,18 +11,21 @@ const app = express();
 app.use(express.json());
 dotenv.config();
 app.use(cors({
-    origin: ["http://localhost:5173"],
+    origin: 'http://localhost:5173',
     methods: ["POST", "GET", "PUT", "DELETE"],
     credentials: true
 }));
 app.use(cookieParser());
 
+//deployment credentials
 const db = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE
-});
+    host: "sql12.freemysqlhosting.net",
+    user: "sql12709419",
+    password: "Jv7LMxSYDl",
+    database: "sql12709419",
+    port: 3306
+})
+
 
 ////////////////for theMealDB proxy srver////////////////////////////////////
 app.get('/meals', async (req, res) => {
