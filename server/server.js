@@ -11,11 +11,11 @@ const app = express();
 app.use(express.json());
 dotenv.config();
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: 'https://bazura.vercel.app',
     methods: ["POST", "GET", "PUT", "DELETE"],
     credentials: true
 }));
-app.use(cookieParser());
+app.use(cookieParser());    
 
 //deployment credentials
 const db = mysql.createConnection({
