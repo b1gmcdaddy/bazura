@@ -17,11 +17,22 @@ app.use(cors({
 }));
 app.use(cookieParser());
 
+/*
 const db = mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE
+    database: process.env.DB_DATABASE,
+    port: process.env.DB_PORT
+});
+*/
+
+const db = mysql.createConnection({
+    host: "sql12.freemysqlhosting.net",
+    user: "sql12709419",
+    password: "Jv7LMxSYDl",
+    database: "sql12709419",
+    port: 3306
 });
 
 ////////////////for theMealDB proxy srver////////////////////////////////////
