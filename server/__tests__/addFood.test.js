@@ -1,13 +1,6 @@
 import request from 'supertest';
 import app from '../server.js';
-import bcrypt from 'bcrypt';
 
-// Mock bcrypt.hash to immediately resolve
-jest.mock('bcrypt', () => ({
-  hash: jest.fn().mockImplementation((data, salt, callback) => {
-    callback(null, 'hashedPassword');
-  }),
-}));
 
 // Mock MySQL database connection and queries
 jest.mock('mysql', () => ({
@@ -40,4 +33,83 @@ describe('POST /addFood', () => {
     expect(response.body.addedFoodId).toBe(1);
   });
 
+  test('returns 400 error when foodName is missing', async () => {
+    const newFood = {
+      foodDesc: 'Delicious cheese pizza',
+      category: 'Italian',
+      price: 9.99,
+    };
+
+    const response = await request(app)
+      .post('/addFood')
+      .send(newFood);
+
+    expect(response.statusCode).toBe(400);
+    // expect(response.body.Error).toBe('Food name is required');
+  });
+
+  test('returns 400 error when foodDesc is missing', async () => {
+    const newFood = {
+      foodName: 'Pizza',
+      category: 'Italian',
+      price: 9.99,
+    };
+
+    const response = await request(app)
+      .post('/addFood')
+      .send(newFood);
+
+    expect(response.statusCode).toBe(400);
+    // expect(response.body.Error).toBe('Food description is required');
+  });
+
+  test('returns 400 error when category is missing', async () => {
+    const newFood = {
+      foodName: 'Pizza',
+      foodDesc: 'Delicious cheese pizza',
+      price: 9.99,
+    };
+
+    const response = await request(app)
+      .post('/addFood')
+      .send(newFood);
+
+    expect(response.statusCode).toBe(400);
+    // expect(response.body.Error).toBe('Food category is required');
+  });
+
+  test('returns 400 error when price is missing', async () => {
+    const newFood = {
+      foodName: 'Pizza',
+      foodDesc: 'Delicious cheese pizza',
+      category: 'Italian',
+    };
+
+    const response = await request(app)
+      .post('/addFood')
+      .send(newFood);
+
+    expect(response.statusCode).toBe(400);
+    // expect(response.body.Error).toBe('Food price is required');
+  });
+
+  test('returns 400 error when price is not a number', async () => {
+    const newFood = {
+      foodName: 'Pizza',
+      foodDesc: 'Delicious cheese pizza',
+      category: 'Italian',
+      price: 'not a number',
+    };
+
+    const response = await request(app)
+      .post('/addFood')
+      .send(newFood);
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body.Error).toBe('price must be a number');
+  });
+
 });
+
+
+
