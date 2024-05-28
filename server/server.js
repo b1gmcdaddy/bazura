@@ -26,7 +26,6 @@ const db = mysql.createConnection({
     port: 3306
 })
 
-
 ////////////////for theMealDB proxy srver////////////////////////////////////
 app.get('/meals', async (req, res) => {
     try {
@@ -114,7 +113,7 @@ app.post('/login', (req, res) => {
             }
             if (response) {
                 const username = data[0].username;
-                const token = jwt.sign({ username }, "jwtKey", { expiresIn: '1d' });
+                const token = jwt.sign({ username }, "jwtKey", { expiresIn: '30m' });
                 res.cookie('token', token);
                 return res.status(200).json({ Status: "Success", token });
             } else {
