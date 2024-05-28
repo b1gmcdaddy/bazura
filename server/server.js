@@ -43,7 +43,7 @@ const verifyUser = (req, res, next) => {
     if (!token) {
         return res.status(401).json({ Error: "Authentication error: Token missing" });
     } else {
-        jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        jwt.verify(token, 'jwtKey', (err, decoded) => {
             if (err) {
                 console.log(err);
                 return res.status(401).json({ Error: "Authentication error: Invalid token" });
@@ -116,7 +116,7 @@ app.post('/login', (req, res) => {
             if (result) {
                 // Passwords match, generate JWT token
                 const username = data[0].username;
-                const token = jwt.sign({ username }, process.env.JWT_SECRET, { expiresIn: '30m' });
+                const token = jwt.sign({ username }, 'jwtKey', { expiresIn: '30m' });
                 res.cookie('token', token, { httpOnly: true });
                 return res.status(200).json({ Status: "Success", token });
             } else {
