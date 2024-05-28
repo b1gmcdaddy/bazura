@@ -1,5 +1,4 @@
 module.exports = {
-  
   globals: {
     'process.env.NODE_ENV': 'test',
   },

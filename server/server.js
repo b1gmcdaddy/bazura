@@ -132,17 +132,16 @@ app.get('/menu', (req, res) => {
     const sql = "SELECT * FROM menu";
     db.query(sql, (err, result) => {
         if(err) {
-            console.error(err);
+            console.log(err);
             return res.status(500).json({ Error: "Error retrieving menu items" });
         }
-        return res.json({ Status: "Success", menu: result }); // Ensure response format matches test expectations
+        return res.json({ Status: "Success", menu: result }); 
     });
 });
 
 
 app.post('/addFood', (req, res) => {
     const newFood = req.body;
-    // Insert the new food item into the database
     db.query(`INSERT INTO menu (foodName, foodDesc, category, price) VALUES (?, ?, ?, ?)`, 
       [newFood.foodName, newFood.foodDesc, newFood.category, newFood.price], 
       (err, results) => {
@@ -154,6 +153,7 @@ app.post('/addFood', (req, res) => {
       });
   });
 
+  
 app.put('/menu/:id', (req, res) => {
     const { foodName, foodDesc, price } = req.body;
     const { id } = req.params;
@@ -164,7 +164,7 @@ app.put('/menu/:id', (req, res) => {
             console.error(err);
             return res.status(500).json({ Error: "Error updating menu item" });
         }
-        if(result.affectedRows === 0) { // Check if any rows were affected by the update
+        if(result.affectedRows === 0) { 
             return res.status(404).json({ Error: "No matching food item found for update" });
         }
         return res.json({ Status: "Success" });
@@ -181,7 +181,7 @@ app.delete('/menu/:id', (req, res) => {
             console.error(err);
             return res.status(500).json({ Error: "Error deleting menu item" });
         }
-        if(result.affectedRows === 0) { // Check if any rows were affected by the delete
+        if(result.affectedRows === 0) { 
             return res.status(404).json({ Error: "No matching food item found for delete" });
         }
         return res.json({ Status: "Success" });
