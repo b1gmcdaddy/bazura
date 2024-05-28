@@ -19,7 +19,7 @@ const Login = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios.post('http://localhost:8081/login', values)
+    axios.post('https://bazura.onrender.com/login', values)
     .then(res => {
       if(res.data.Status === "Success") {
         navigate('/');
