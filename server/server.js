@@ -38,25 +38,25 @@ app.get('/meals', async (req, res) => {
 });
 
 /////////////////////////////////auth, registration, login////////////////////////////////////////////
-const verifyUser = (req, res, next) => {
+const verifyUser = (req, res, next) => {    
     const token = req.cookies.token;
-    if(!token) {
-        return res.status(401).json({Error: "Authentication error: Token missing"});
+    if (!token) {
+        return res.status(401).json({ Error: "Authentication error: Token missing" });
     } else {
-        jwt.verify(token, "jwtKey", (err, decoded) => {
-            if(err) {
-                return res.status(401).json({Error: "Authentication error: Invalid token"})
+        jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+            if (err) {
+                return res.status(401).json({ Error: "Authentication error: Invalid token" });
             } else {
                 req.username = decoded.username;
                 next();
             }
-        })
+        });
     }
 };
 
 app.get('/', verifyUser, (req, res) => {
-    return res.json({Status: "Success", username: req.username});
-})
+    return res.status(200).json({ Status: "Success", username: req.username });
+});
 
 const hashNum = 10;
 app.post('/register', (req, res) => {
@@ -95,6 +95,7 @@ app.post('/login', (req, res) => {
         return res.status(400).json({ Error: "Email and password are required" });
     }
 
+    // Retrieve user data from the database based on email
     const sql = "SELECT * FROM users WHERE email = ?";
     db.query(sql, [email], (err, data) => {
         if (err) {
@@ -105,16 +106,17 @@ app.post('/login', (req, res) => {
             return res.status(404).json({ Error: "Email not found" });
         }
 
-        const hashedPassword = data[0].password;
-        bcrypt.compare(password, hashedPassword, (err, response) => {
+        // Compare passwords
+        bcrypt.compare(password, data[0].password, (err, result) => {
             if (err) {
                 console.error(err);
                 return res.status(500).json({ Error: "Server error during password comparison" });
             }
-            if (response) {
+            if (result) {
+                // Passwords match, generate JWT token
                 const username = data[0].username;
-                const token = jwt.sign({ username }, "jwtKey", { expiresIn: '30m' });
-                res.cookie('token', token);
+                const token = jwt.sign({ username }, process.env.JWT_SECRET, { expiresIn: '30m' });
+                res.cookie('token', token, { httpOnly: true });
                 return res.status(200).json({ Status: "Success", token });
             } else {
                 return res.status(401).json({ Error: "Incorrect password" });
