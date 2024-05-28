@@ -11,6 +11,7 @@ const app = express();
 app.use(express.json());
 dotenv.config();
 app.use(cors({
+    origin: 'http://localhost:5173',
     methods: ["POST", "GET", "PUT", "DELETE"],
     credentials: true
 }));
@@ -24,6 +25,7 @@ const db = mysql.createConnection({
     database: "sql12709419",
     port: 3306
 })
+
 
 ////////////////for theMealDB proxy srver////////////////////////////////////
 app.get('/meals', async (req, res) => {
