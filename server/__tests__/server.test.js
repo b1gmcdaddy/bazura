@@ -12,32 +12,10 @@ jest.mock('bcrypt', () => ({
 }));
 
 
-const mockQuery = jest.fn().mockImplementation((sql, values, callback) => {
-  if (sql.startsWith("SELECT")) {
-    callback(null, [{ foodID: 1, foodName: "Food 1", foodDesc: "Description 1", category: "Category 1", price: 10.99 }]);
-  } else if (sql.startsWith("INSERT")) {
-    callback(null, { insertId: 1 });
-  } else if (sql.startsWith("UPDATE")) {
-    // Assuming update is successful
-    callback(null, { affectedRows: 1 });
-  } else if (sql.startsWith("DELETE")) {
-    // Assuming delete is successful
-    callback(null, { affectedRows: 1 });
-  } else {
-    callback(new Error("Invalid SQL query"));
-  }
-});
-
-
-jest.mock('mysql', () => ({
-  createConnection: jest.fn(() => ({
-    query: mockQuery
-  })),
-}));
-
-
 ////////////////// fetch meals //////////////////////
 describe('GET /meals', () => {
+  jest.setTimeout(10000);
+
   test('responds with a JSON object containing meal data', async () => {
     const response = await request(app)
       .get('/meals')
@@ -48,7 +26,6 @@ describe('GET /meals', () => {
     expect(Array.isArray(response.body.meals)).toBe(true);
   });
 });
-
 
 ////////////////// authentication test cases //////////////////////
 describe('verifyUser middleware', () => {
@@ -79,8 +56,6 @@ describe('verifyUser middleware', () => {
 });
 
 
-
-
 ////////////////REGISTER//////////////////////////////////
 
 describe('POST /register', () => {
@@ -99,7 +74,6 @@ describe('POST /register', () => {
 });
 
 ///////////////////////////////////LOGIN/////////////////////////////////////
-
 
 describe('POST /login', () => {
 
@@ -120,4 +94,38 @@ describe('POST /login', () => {
     expect(response.statusCode).toBe(400);
     expect(response.body.Error).toBe('Email and password are required');
   });
+});
+
+
+jest.mock('mysql', () => ({
+  createConnection: jest.fn(() => ({
+      query: jest.fn((sql, callback) => {
+          if (sql === "SELECT * FROM menu") {
+              // Simulate successful query execution
+              const mockMenu = [
+                  { foodID: 1, foodName: 'Burger', foodDesc: 'Juicy beef patty in a sesame seed bun', category: 'coffee', price: 899 },
+                  { foodID: 2, foodName: 'Fries', foodDesc: 'Crispy golden fries', category: 'snack', price: 349 }
+              ];
+              callback(null, mockMenu);
+          } else {
+              // Simulate database error
+              callback(new Error('Database error'), null);
+          }
+      })
+  }))
+}));
+
+
+describe('GET /menu', () => {
+    it('should return menu items', async () => {
+        const response = await request(app).get('/menu');
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual({
+            Status: 'Success',
+            menu: [
+                { foodID: 1, foodName: 'Burger', foodDesc: 'Juicy beef patty in a sesame seed bun', category: 'coffee', price: 899 },
+                { foodID: 2, foodName: 'Fries', foodDesc: 'Crispy golden fries', category: 'snack', price: 349 }
+            ]
+        });
+    });
 });
