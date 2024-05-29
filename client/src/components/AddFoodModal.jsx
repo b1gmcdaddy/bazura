@@ -11,7 +11,7 @@ const AddFoodModal = ({ show, onClose }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('http://localhost:8081/addFood', {
+    axios.post('https://bazura.onrender.com/addFood', {
       foodName,
       foodDesc,
       category,

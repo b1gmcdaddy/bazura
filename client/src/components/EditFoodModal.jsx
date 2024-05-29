@@ -15,7 +15,7 @@ const EditFoodModal = ({ show, onClose, item }) => {
   }, [item]);
 
   const handleSubmit = (e) => {
-    axios.put(`http://localhost:8081/menu/${item.foodID}`, {
+    axios.put(`https://bazura.onrender.com/menu/${item.foodID}`, {
       foodName,
       foodDesc,
       price

@@ -19,20 +19,20 @@ const Login = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("Form submitted"); // Debugging statement
-    axios.post('http://localhost:8081/login', values, { withCredentials: true })
+    console.log("Form submitted"); 
+    axios.post('https://bazura.onrender.com/login', values, { withCredentials: true })
       .then(res => {
-        console.log("Login response:", res.data); // Debugging statement
+        console.log("Login response:", res.data); 
         if (res.data.Status === "Success") {
-          console.log("Login successful"); // Debugging statement
+          console.log("Login successful"); 
           navigate('/');
         } else {
-          console.log("Login failed:", res.data.Error); // Debugging statement
+          console.log("Login failed:", res.data.Error); 
           alert(res.data.Error);
         }
       })
       .catch(err => {
-        console.error("Login error:", err); // Debugging statement
+        console.error("Login error:", err); 
         alert("An error occurred during login");
       });
   }
