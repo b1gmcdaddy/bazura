@@ -45,7 +45,7 @@ describe('verifyUser middleware', () => {
   });
 
   test('returns the username if the token is valid', async () => {
-    const token = jwt.sign({ username: 'testuser' }, 'jwtKey', { expiresIn: '1d' });
+    const token = jwt.sign({ username: 'testuser' }, process.env.JWT_SECRET, { expiresIn: '1d' });
     const response = await request(app)
       .get('/')
       .set('Cookie', [`token=${token}`]);
@@ -93,6 +93,16 @@ describe('POST /login', () => {
       .send(userData);
     expect(response.statusCode).toBe(400);
     expect(response.body.Error).toBe('Email and password are required');
+  });
+});
+
+describe('GET /logout', () => {
+  it('revokes the token and clears the cookie', async () => {
+    const response = await request(app)
+      .get('/logout');
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({ Status: 'Success' });
+    expect(response.header['set-cookie'][0]).toMatch(/^token=;/);
   });
 });
 
