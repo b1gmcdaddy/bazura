@@ -15,7 +15,8 @@ app.use(cors({
     methods: ["POST", "GET", "PUT", "DELETE"],
     credentials: true
 }));
-app.use(cookieParser());    
+app.use(cookieParser());
+dotenv.config();    
 
 
 const db = mysql.createConnection({
@@ -42,7 +43,7 @@ const verifyUser = (req, res, next) => {
     if (!token) {
         return res.status(401).json({ Error: "Authentication error: Token missing" });
     } else {
-        jwt.verify(token, "jwtKey", (err, decoded) => {
+        jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
             if (err) {
                 console.log(err);
                 return res.status(401).json({ Error: "Authentication error: Invalid token" });
@@ -114,8 +115,8 @@ app.post('/login', (req, res) => {
             }
             if (result) {
                 const username = data[0].username;
-                const token = jwt.sign({ username }, "jwtKey", { expiresIn: '1d' });
-                res.cookie('token', token,);
+                const token = jwt.sign({ username }, process.env.JWT_SECRET, { expiresIn: '1d' });
+                res.cookie('token', token, { httpOnly: true, sameSite: 'strict', secure: true });
                 return res.status(200).json({ Status: "Success", token });
             } else {
                 return res.status(401).json({ Error: "Incorrect password" });
