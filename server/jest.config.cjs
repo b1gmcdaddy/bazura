@@ -1,5 +1,4 @@
 module.exports = {
-  
   globals: {
     'process.env.NODE_ENV': 'test',
   },
@@ -9,4 +8,5 @@ module.exports = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
   },
+  forceExit: true,
 };

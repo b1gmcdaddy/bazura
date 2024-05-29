@@ -17,11 +17,12 @@ app.use(cors({
 }));
 app.use(cookieParser());    
 
+
 const db = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "bazura"
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE
 });
 
 ////////////////for theMealDB proxy srver////////////////////////////////////
@@ -41,7 +42,7 @@ const verifyUser = (req, res, next) => {
     if (!token) {
         return res.status(401).json({ Error: "Authentication error: Token missing" });
     } else {
-        jwt.verify(token, 'jwtKey', (err, decoded) => {
+        jwt.verify(token, "jwtKey", (err, decoded) => {
             if (err) {
                 console.log(err);
                 return res.status(401).json({ Error: "Authentication error: Invalid token" });
@@ -65,8 +66,8 @@ app.post('/register', (req, res) => {
 
   bcrypt.hash(req.body.password.toString(), hashNum, (err, hash) => {
     if (err) {
-      console.error(err);
-      return res.json({ Error: "Error hashing" });
+    //   console.error(err);
+      return res.status(500).json({ Error: "Error hashing" });
     }
 
     const sql = "INSERT INTO users (`username`, `email`, `password`) VALUES (?)";
@@ -134,18 +135,26 @@ app.get('/menu', (req, res) => {
     const sql = "SELECT * FROM menu";
     db.query(sql, (err, result) => {
         if(err) {
-            console.error(err);
+            console.log(err);
             return res.status(500).json({ Error: "Error retrieving menu items" });
         }
-        return res.json({ Status: "Success", menu: result }); // Ensure response format matches test expectations
+        return res.json({ Status: "Success", menu: result }); 
     });
 });
 
 
 app.post('/addFood', (req, res) => {
     const newFood = req.body;
+    if (!newFood.foodName ||!newFood.foodDesc ||!newFood.category ||!newFood.price) {
+      res.status(400).send({ Error: 'Missing required fields' });
+      return;
+    }
+    if (typeof newFood.price!== 'number') {
+      res.status(400).send({ Error: 'price must be a number' });
+      return;
+    }
     // Insert the new food item into the database
-    db.query(`INSERT INTO menu (foodName, foodDesc, category, price) VALUES (?, ?, ?, ?)`, 
+    db.query(`INSERT INTO menu (foodName, foodDesc, category, price) VALUES (?,?,?,?)`, 
       [newFood.foodName, newFood.foodDesc, newFood.category, newFood.price], 
       (err, results) => {
         if (err) {
@@ -154,45 +163,63 @@ app.post('/addFood', (req, res) => {
           res.send({ Status: 'Success', addedFoodId: results.insertId });
         }
       });
-  });
+});
 
+  
 app.put('/menu/:id', (req, res) => {
     const { foodName, foodDesc, price } = req.body;
     const { id } = req.params;
+
+
+    if (!foodName || !foodDesc || price < 0 || !price) {
+      return res.status(400).json({ Error: "Invalid food data" });
+    }
+  
     const sql = "UPDATE menu SET foodName = ?, foodDesc = ?, price = ? WHERE foodID = ?";
     const values = [foodName, foodDesc, price, id];
     db.query(sql, values, (err, result) => {
-        if(err) {
-            console.error(err);
-            return res.status(500).json({ Error: "Error updating menu item" });
-        }
-        if(result.affectedRows === 0) { // Check if any rows were affected by the update
-            return res.status(404).json({ Error: "No matching food item found for update" });
-        }
-        return res.json({ Status: "Success" });
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ Error: "Error updating menu item" });
+      }
+      if (result.affectedRows === 0) { 
+        return res.status(404).json({ Error: "No matching food item found for update" });
+      }
+      return res.json({ Status: "Success" });
     });
-});
-
+  });
 
 
 app.delete('/menu/:id', (req, res) => {
     const { id } = req.params;
+    if (!id) {
+        return res.status(400).json({ Error: 'Invalid request' });
+      }
+      if (isNaN(id)) {
+        return res.status(400).json({ Error: 'Invalid food ID' });
+      }
     const sql = "DELETE FROM menu WHERE foodID = ?";
+
     db.query(sql, [id], (err, result) => {
         if(err) {
             console.error(err);
             return res.status(500).json({ Error: "Error deleting menu item" });
         }
         if(result.affectedRows === 0) { 
-            return res.status(404).json({ Error: "No matching food item found for delete" });
+            return res.status(400).json({ Error: "No matching food item found for delete" });
         }
         return res.json({ Status: "Success" });
     });
 });
 
+if (process.env.NODE_ENV!== 'test') {
+    app.listen(8081, () => {
+      console.log(`Server is running on port 8081`);
+    });
+}
 
-app.listen(8081, () => {
-    console.log(`Server is running on port 8081`);
-});
+// app.listen(8081, () => {
+//     console.log(`Server is running on port 8081`);
+// });
 
 export default app;
