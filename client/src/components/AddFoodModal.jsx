@@ -10,6 +10,7 @@ const AddFoodModal = ({ show, onClose }) => {
   const [price, setPrice] = useState('');
 
   const handleSubmit = (e) => {
+    e.preventDefault();
     axios.post('http://localhost:8081/addFood', {
       foodName,
       foodDesc,

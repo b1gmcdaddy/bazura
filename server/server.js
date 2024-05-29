@@ -15,8 +15,7 @@ app.use(cors({
     methods: ["POST", "GET", "PUT", "DELETE"],
     credentials: true
 }));
-app.use(cookieParser());
-dotenv.config();    
+app.use(cookieParser());   
 
 
 const db = mysql.createConnection({
@@ -67,7 +66,7 @@ app.post('/register', (req, res) => {
 
   bcrypt.hash(req.body.password.toString(), hashNum, (err, hash) => {
     if (err) {
-    //   console.error(err);
+      console.error(err);
       return res.status(500).json({ Error: "Error hashing" });
     }
 
@@ -95,8 +94,6 @@ app.post('/login', (req, res) => {
     if (!email || !password) {
         return res.status(400).json({ Error: "Email and password are required" });
     }
-
-    // Retrieve user data from the database based on email
     const sql = "SELECT * FROM users WHERE email = ?";
     db.query(sql, [email], (err, data) => {
         if (err) {
@@ -106,8 +103,6 @@ app.post('/login', (req, res) => {
         if (data.length === 0) {
             return res.status(404).json({ Error: "Email not found" });
         }
-
-        // Compare passwords
         bcrypt.compare(password, data[0].password, (err, result) => {
             if (err) {
                 console.error(err);
@@ -116,7 +111,7 @@ app.post('/login', (req, res) => {
             if (result) {
                 const username = data[0].username;
                 const token = jwt.sign({ username }, process.env.JWT_SECRET, { expiresIn: '1d' });
-                res.cookie('token', token, { httpOnly: true, sameSite: 'strict', secure: true });
+                res.cookie('token', token);
                 return res.status(200).json({ Status: "Success", token });
             } else {
                 return res.status(401).json({ Error: "Incorrect password" });
@@ -213,14 +208,8 @@ app.delete('/menu/:id', (req, res) => {
     });
 });
 
-if (process.env.NODE_ENV!== 'test') {
-    app.listen(8081, () => {
-      console.log(`Server is running on port 8081`);
-    });
-}
-
-// app.listen(8081, () => {
-//     console.log(`Server is running on port 8081`);
-// });
+app.listen(8081, () => {
+    console.log(`Server is running on port 8081`);
+});
 
 export default app;
