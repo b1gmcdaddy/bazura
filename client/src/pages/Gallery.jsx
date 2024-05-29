@@ -12,7 +12,7 @@ const Gallery = () => {
   useEffect(() => {
     const fetchMealData = async () => {
         try {
-            const response = await axios.get('https://bazura.onrender.com/meals');
+            const response = await axios.get('http://localhost:8081/meals');
             setMealData(response.data.meals);
         } catch (error) {
             console.error('Error fetching data from server:', error);

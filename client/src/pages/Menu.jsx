@@ -27,7 +27,7 @@ const Menu = () => {
   axios.defaults.withCredentials = true;
 
   useEffect(() => {
-    axios.get('https://bazura.onrender.com/menu')
+    axios.get('http://localhost:8081/menu')
       .then(res => {
         if (res.data.Status === "Success") {
           const categorizedMenu = categorizeMenu(res.data.menu);
@@ -52,7 +52,7 @@ const Menu = () => {
 
 
   useEffect(() => {
-    axios.get('https://bazura.onrender.com/verify')
+    axios.get('http://localhost:8081')
       .then(res => {
         if (res.data.Status === "Success") {
           setAuth(true);
@@ -65,7 +65,7 @@ const Menu = () => {
   }, []);
 
   const handleLogout = () => {
-    axios.get('https://bazura.onrender.com/logout')
+    axios.get('http://localhost:8081/logout')
       .then(res => {
         if (res.data.Status === "Success") {
           setAuth(false);
@@ -84,7 +84,7 @@ const Menu = () => {
 
   const handleDelete = async (foodID) => {
     try{
-        await axios.delete(`https://bazura.onrender.com/menu/${foodID}`)
+        await axios.delete(`http://localhost:8081/menu/${foodID}`)
         window.location.reload()
     }catch(err) {
         console.log(err);

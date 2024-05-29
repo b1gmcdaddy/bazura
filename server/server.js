@@ -11,20 +11,18 @@ const app = express();
 app.use(express.json());
 dotenv.config();
 app.use(cors({
-    origin: 'https://bazura.vercel.app',
+    origin: ["http://localhost:5173"],
     methods: ["POST", "GET", "PUT", "DELETE"],
     credentials: true
 }));
 app.use(cookieParser());    
 
-//deployment credentials
 const db = mysql.createConnection({
-    host: "sql12.freemysqlhosting.net",
-    user: "sql12709419",
-    password: "Jv7LMxSYDl",
-    database: "sql12709419",
-    port: 3306
-})
+    host: "localhost",
+    user: "root",
+    password: "",
+    database: "bazura"
+});
 
 ////////////////for theMealDB proxy srver////////////////////////////////////
 app.get('/meals', async (req, res) => {
@@ -55,8 +53,8 @@ const verifyUser = (req, res, next) => {
     }
 };
 
-app.get('/verify', verifyUser, (req, res) => {
-    return res.status(200).json({ Status: "Success", username: req.username });
+app.get('/', verifyUser, (req, res) => {
+    return res.json({ Status: "Success", username: req.username });
 });
 
 const hashNum = 10;
@@ -114,10 +112,9 @@ app.post('/login', (req, res) => {
                 return res.status(500).json({ Error: "Server error during password comparison" });
             }
             if (result) {
-                // Passwords match, generate JWT token
                 const username = data[0].username;
-                const token = jwt.sign({ username }, 'jwtKey', { expiresIn: '30m' });
-                res.cookie('token', token, { httpOnly: true });
+                const token = jwt.sign({ username }, "jwtKey", { expiresIn: '1d' });
+                res.cookie('token', token,);
                 return res.status(200).json({ Status: "Success", token });
             } else {
                 return res.status(401).json({ Error: "Incorrect password" });
@@ -186,7 +183,7 @@ app.delete('/menu/:id', (req, res) => {
             console.error(err);
             return res.status(500).json({ Error: "Error deleting menu item" });
         }
-        if(result.affectedRows === 0) { // Check if any rows were affected by the delete
+        if(result.affectedRows === 0) { 
             return res.status(404).json({ Error: "No matching food item found for delete" });
         }
         return res.json({ Status: "Success" });

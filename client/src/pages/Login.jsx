@@ -20,7 +20,7 @@ const Login = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log("Form submitted"); // Debugging statement
-    axios.post('https://bazura.onrender.com/login', values, { withCredentials: true })
+    axios.post('http://localhost:8081/login', values, { withCredentials: true })
       .then(res => {
         console.log("Login response:", res.data); // Debugging statement
         if (res.data.Status === "Success") {

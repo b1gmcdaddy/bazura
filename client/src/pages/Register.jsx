@@ -24,7 +24,7 @@ const Register = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        axios.post('https://bazura.onrender.com/register', values)
+        axios.post('http://localhost:8081/register', values)
         .then(res => {
           if(res.data.Status === "Success") {
             navigate('/login');
